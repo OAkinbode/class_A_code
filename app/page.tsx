@@ -1,20 +1,16 @@
 import Image from "next/image";
-import { welcomeMessage } from "../utils/welcome_function";
 import JammyGamesWelcome from "@/components/jammy_games_welcome";
 import Link from "next/link";
+import { userDetails } from "@/utils/user_functions";
 
 export default function Home() {
+  const { firstname, hobby, age } = userDetails;
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-red-50 font-sans dark:bg-black">
       <main className="flex min-h-screen w-full flex-col items-center justify-start py-16 px-8 bg-white dark:bg-black sm:items-start gap-6">
-        <div>
-          <p className="text-3xl font-bold text-zinc-900 dark:text-white sm:text-6xl">
-            Welcome class a code.
-          </p>
-          <p className="text-2xl text-blue-700"> {welcomeMessage("Olusola")}</p>
-        </div>
-        <div className="flex flex-row bg-zinc-50 p-4 w-full">
-          <div className="flex-1  flex justify-center items-center">
+        <div className=" w-full p-2 flex flex-row gap-2">
+          <div className="flex-1 flex justify-center items-center">
             <Image
               className="dark:invert "
               src="/noncreepy_teddybear.jpg"
@@ -24,8 +20,28 @@ export default function Home() {
               priority
             />
           </div>
+          <div className="flex-1">
+            <p className="text-3xl text-zinc-900 dark:text-white ">
+              Welcome to Our Kahoots Clone:{" "}
+              <span className="text-blue-500 italic">{firstname}</span>
+            </p>
 
-          <div className="flex-1 bg-green-200 p-4 flex flex-col justify-start items-center">
+            {age > 18 ? (
+              <p className="text-xl text-gray-700">
+                {" "}
+                I know you like {hobby}, but would you like to play a kahoots
+                clone?
+              </p>
+            ) : (
+              <p className="text-xl text-gray-700">
+                {" "}
+                Sorry, you are too young to play these games.
+              </p>
+            )}
+          </div>
+        </div>
+        <div className="flex flex-row bg-zinc-50 p-4 w-full">
+          <div className="flex-1 bg-[#f7b80a] p-4 flex flex-col justify-start items-center">
             <nav className="flex flex-col gap-4 italics text-lg">
               <Link href="/about">About</Link>
               <Link href="/twistingJack">Twisting Jack</Link>
@@ -33,7 +49,12 @@ export default function Home() {
           </div>
         </div>
 
-        <JammyGamesWelcome />
+        <JammyGamesWelcome
+          name={firstname}
+          recommendation={() => {
+            return `${age > 18 ? "Here are a list of potential games you can play: " : "Go get your mom!!!"}`;
+          }}
+        />
       </main>
     </div>
   );

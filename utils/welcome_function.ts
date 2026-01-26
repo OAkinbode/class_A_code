@@ -1,5 +1,6 @@
 export function welcomeMessage(name: string): string {
-  return `Welcome to Class A Code, ${name}!`;
+  return `Welcome to Class A Code, ${name.toUpperCase()}!`;
+  // return "Welcome to Class A Code, " + name;
 }
 
 export const fareWellMessage = (name: string) => {
