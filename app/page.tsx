@@ -2,6 +2,7 @@ import Image from "next/image";
 import JammyGamesWelcome from "@/components/jammy_games_welcome";
 import Link from "next/link";
 import { userDetails } from "@/utils/user_functions";
+import CheckUsername from "@/components/check_username";
 
 export default function Home() {
   const { firstname, hobby, age } = userDetails;
@@ -38,6 +39,9 @@ export default function Home() {
                 Sorry, you are too young to play these games.
               </p>
             )}
+            <div className="my-2">
+              <CheckUsername />
+            </div>
           </div>
         </div>
         <div className="flex flex-row bg-zinc-50 p-4 w-full">
