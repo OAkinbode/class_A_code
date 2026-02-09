@@ -1,16 +1,21 @@
+"use client";
+import { useState } from "react";
 import Image from "next/image";
 import JammyGamesWelcome from "@/components/jammy_games_welcome";
 import Link from "next/link";
 import { userDetails } from "@/utils/user_functions";
 import CheckUsername from "@/components/check_username";
+import GamesDisplay from "@/components/games_display";
+import { Game } from "@/utils/welcome_function";
 
 export default function Home() {
   const { firstname, hobby, age } = userDetails;
+  const [cart, setCart] = useState<Game[]>([]);
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-red-50 font-sans dark:bg-black">
       <main className="flex min-h-screen w-full flex-col items-center justify-start py-16 px-8 bg-white dark:bg-black sm:items-start gap-6">
-        <div className=" w-full p-2 flex flex-row gap-2">
+        <div className=" w-full p-2 flex flex-col md:flex-row gap-2">
           <div className="flex-1 flex justify-center items-center">
             <Image
               className="dark:invert "
@@ -44,14 +49,15 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <div className="flex flex-row bg-zinc-50 p-4 w-full">
+        <GamesDisplay games={cart} setCart={setCart} />
+        {/* <div className="flex flex-row bg-zinc-50 p-4 w-full">
           <div className="flex-1 bg-[#f7b80a] p-4 flex flex-col justify-start items-center">
             <nav className="flex flex-col gap-4 italics text-lg">
               <Link href="/about">About</Link>
               <Link href="/twistingJack">Twisting Jack</Link>
             </nav>
           </div>
-        </div>
+        </div> */}
 
         <JammyGamesWelcome
           name={firstname}
