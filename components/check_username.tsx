@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { checkUserdb } from "@/utils/check_user_db";
+import { useUserStore } from "@/utils/store";
+import { set } from "date-fns";
 
 type UserDetails = {
   username: string;
@@ -14,12 +15,16 @@ export default function CheckUsername() {
     location: "",
   });
 
+  const setUsername = useUserStore((state) => state.setUsername);
+
   const submitForm = (e: React.FormEvent) => {
     e.preventDefault();
-    const exists = checkUserdb(userdetails.username);
-    exists
-      ? alert("name already exists, pick another one..")
-      : alert("congratulations");
+    // const exists = checkUserdb(userdetails.username);
+    // exists
+    //   ? alert("name already exists, pick another one..")
+    //   : alert("congratulations");
+    setUsername(userdetails.username); // Update the username in the Zustand store
+    // Display the entered username and location
   };
 
   const onChangeText = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -54,7 +59,7 @@ export default function CheckUsername() {
           type="submit"
           className="border border-gray-700 bg-green-300 rounded-md shadow-2xl p-1 text-green-900"
         >
-          Check username
+          Submit
         </button>
       </form>
     </div>

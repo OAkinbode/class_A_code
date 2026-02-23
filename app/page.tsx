@@ -7,10 +7,14 @@ import { userDetails } from "@/utils/user_functions";
 import CheckUsername from "@/components/check_username";
 import GamesDisplay from "@/components/games_display";
 import { Game } from "@/utils/welcome_function";
+import GamesCount from "@/components/games_count";
+import { useUserStore } from "@/utils/store";
 
 export default function Home() {
   const { firstname, hobby, age } = userDetails;
   const [cart, setCart] = useState<Game[]>([]);
+
+  const username = useUserStore((state) => state.username);
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-red-50 font-sans dark:bg-black">
@@ -29,7 +33,7 @@ export default function Home() {
           <div className="flex-1">
             <p className="text-3xl text-zinc-900 dark:text-white ">
               Welcome to Our Kahoots Clone:{" "}
-              <span className="text-blue-500 italic">{firstname}</span>
+              <span className="text-blue-500 italic">{username}</span>
             </p>
 
             {age > 18 ? (
@@ -49,22 +53,23 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <GamesDisplay games={cart} setCart={setCart} />
-        {/* <div className="flex flex-row bg-zinc-50 p-4 w-full">
+        {/* <GamesCount games={cart} /> */}
+        {/* <GamesDisplay games={cart} setCart={setCart} /> */}
+        <div className="flex flex-row bg-zinc-50 p-4 w-full">
           <div className="flex-1 bg-[#f7b80a] p-4 flex flex-col justify-start items-center">
             <nav className="flex flex-col gap-4 italics text-lg">
               <Link href="/about">About</Link>
               <Link href="/twistingJack">Twisting Jack</Link>
             </nav>
           </div>
-        </div> */}
+        </div>
 
-        <JammyGamesWelcome
+        {/* <JammyGamesWelcome
           name={firstname}
           recommendation={() => {
             return `${age > 18 ? "Here are a list of potential games you can play: " : "Go get your mom!!!"}`;
           }}
-        />
+        /> */}
       </main>
     </div>
   );

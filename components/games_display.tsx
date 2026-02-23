@@ -52,7 +52,6 @@ export default function GamesDisplay({ games, setCart }: GamesDisplayProp) {
         ))}
       </ul>
       <button>Show cart games</button>
-      <p>{games.length} games in cart </p>
     </div>
   );
 }
