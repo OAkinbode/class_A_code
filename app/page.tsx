@@ -1,20 +1,38 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
-import JammyGamesWelcome from "@/components/jammy_games_welcome";
 import Link from "next/link";
 import { userDetails } from "@/utils/user_functions";
 import CheckUsername from "@/components/check_username";
-import GamesDisplay from "@/components/games_display";
 import { Game } from "@/utils/welcome_function";
-import GamesCount from "@/components/games_count";
 import { useUserStore } from "@/utils/store";
+import { useAuth } from "@/components/AuthProvider";
+import { signOut } from "firebase/auth";
+import { readAllDocuments } from "@/utils/firebase_crud";
+import { readAllDocumentsSupabase } from "@/utils/supabase_crud";
 
 export default function Home() {
   const { firstname, hobby, age } = userDetails;
   const [cart, setCart] = useState<Game[]>([]);
 
   const username = useUserStore((state) => state.username);
+  const { user, loading } = useAuth();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [allgames, setAllGames] = useState<any[] | null>(null);
+
+  useEffect(() => {
+    if (!allgames) {
+      const fetchGames = async () => {
+        try {
+          const games = await readAllDocumentsSupabase("games");
+          setAllGames(games);
+        } catch (error) {
+          console.error("Error fetching games: ", error);
+        }
+      };
+      fetchGames();
+    }
+  }, [allgames]);
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-red-50 font-sans dark:bg-black">
@@ -32,7 +50,7 @@ export default function Home() {
           </div>
           <div className="flex-1">
             <p className="text-3xl text-zinc-900 dark:text-white ">
-              Welcome to Our Kahoots Clone:{" "}
+              Welcome to Our Kahoots Clone: {user ? user.displayName : "Guest"}
               <span className="text-blue-500 italic">{username}</span>
             </p>
 
@@ -60,8 +78,22 @@ export default function Home() {
             <nav className="flex flex-col gap-4 italics text-lg">
               <Link href="/about">About</Link>
               <Link href="/twistingJack">Twisting Jack</Link>
+              <Link href="/teddybooks">Teddy Bear Books</Link>
             </nav>
           </div>
+        </div>
+
+        <div>
+          All Games:
+          {allgames ? (
+            <ul>
+              {allgames.map((game) => (
+                <li key={game.id}>{game.name}</li>
+              ))}
+            </ul>
+          ) : (
+            <p>Loading games...</p>
+          )}
         </div>
 
         {/* <JammyGamesWelcome
